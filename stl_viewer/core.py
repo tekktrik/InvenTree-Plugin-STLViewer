@@ -47,9 +47,6 @@ class STLViewer(SettingsMixin, UserInterfaceMixin, InvenTreePlugin):
     # MIN_VERSION = '0.18.0'
     # MAX_VERSION = '2.0.0'
 
-    # Render custom UI elements to the plugin settings page
-    ADMIN_SOURCE = "Settings.js:renderPluginSettings"
-
     # Plugin settings (from SettingsMixin)
     # Ref: https://docs.inventree.org/en/latest/plugins/mixins/settings/
     USER_SETTINGS = {

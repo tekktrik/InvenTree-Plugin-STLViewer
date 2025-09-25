@@ -49,7 +49,6 @@ export default defineConfig({
       preserveEntrySignatures: "exports-only",
       input: [
         './src/Panel.tsx',
-        './src/Settings.tsx',
       ],
       output: {
         dir: '../stl_viewer/static',
