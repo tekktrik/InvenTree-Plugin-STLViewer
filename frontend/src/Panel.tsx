@@ -10,17 +10,37 @@ import { useEffect, useRef, useState } from 'react';
 import type * as THREE from 'three';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
 
+function STLMesh({
+  context,
+  ...props
+}: { context: InvenTreePluginContext } & ThreeElements['mesh']) {
+  const model_color: string = context.context.model_color;
+
+  const meshRef = useRef<THREE.Mesh>(null!);
+  console.log(props.geometry);
+  return (
+    <mesh {...props} ref={meshRef} geometry={props.geometry} scale={1}>
+      <meshPhongMaterial
+        color={model_color}
+        emissive={'#000000'}
+        specular={'#000000'}
+        shininess={50}
+        reflectivity={1}
+        refractionRatio={1}
+      />
+    </mesh>
+  );
+}
+
 /**
  * Render a custom panel with the provided context.
  * Refer to the InvenTree documentation for the context interface
  * https://docs.inventree.org/en/latest/plugins/mixins/ui/#plugin-context
  */
 function STLViewerPanel({ context }: { context: InvenTreePluginContext }) {
-  const attachment_urls: string[] = context.context.attachments;
-
   const [geometries, setGeometries] = useState<THREE.BufferGeometry[]>([]);
 
-  const model_color: string = context.context.model_color;
+  const attachment_urls: string[] = context.context.attachments;
 
   useEffect(() => {
     const loader = new STLLoader();
@@ -33,23 +53,6 @@ function STLViewerPanel({ context }: { context: InvenTreePluginContext }) {
       )
     ).then(setGeometries);
   }, [attachment_urls]);
-
-  function STLMesh(props: ThreeElements['mesh']) {
-    const meshRef = useRef<THREE.Mesh>(null!);
-    console.log(props.geometry);
-    return (
-      <mesh {...props} ref={meshRef} geometry={props.geometry} scale={1}>
-        <meshPhongMaterial
-          color={model_color}
-          emissive={'#000000'}
-          specular={'#000000'}
-          shininess={50}
-          reflectivity={1}
-          refractionRatio={1}
-        />
-      </mesh>
-    );
-  }
 
   const tab_list = attachment_urls.map((url) => (
     <Tabs.Tab value={url.substring(url.lastIndexOf('/') + 1)}>
@@ -64,7 +67,7 @@ function STLViewerPanel({ context }: { context: InvenTreePluginContext }) {
           <ambientLight />
           <pointLight position={[100, 100, 100]} decay={0} />
           <pointLight position={[-100, -100, -100]} decay={0} />
-          <STLMesh geometry={geometries[index]} />
+          <STLMesh context={context} geometry={geometries[index]} />
           <OrbitControls />
         </Bounds>
       </Canvas>
