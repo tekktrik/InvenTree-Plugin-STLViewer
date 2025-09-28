@@ -24,4 +24,4 @@ Users can set their preferred STL model color in their user settings.
 
 ## Usage
 
-The STLViewer panel will automatically appear when looking at parts that have STL files as attachments!  There will be a tab for each STL file.
+The STL Viewer panel will automatically appear when looking at parts that have STL files as attachments!  There will be a tab for each STL file.
